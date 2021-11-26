@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Sensor;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -13,7 +14,7 @@ class SensorController extends Controller
     public function index()
     {
        $sensors = Sensor::all();
-       return array_reverse(Sensor::all()->toArray());
+       return Sensor::all()->toArray();
 
     }
 
@@ -75,6 +76,8 @@ class SensorController extends Controller
             'status' => $newSensor->status,
             'reading' => $newSensor->reading
         ];
+        $message = "is now online.";
+        $newNotification = Notification::create(['alert' => 'Informative','message' => $newSensor->name.' '.$message]);
 
         return response($response, 201);
 
@@ -152,6 +155,8 @@ class SensorController extends Controller
             'status' => $sensor->status,
             'reading' => $sensor->reading
         ];
+        $message = "was deleted.";
+        $newNotification = Notification::create(['alert' => 'Informative','message' => $sensor->name.' '.$message]);
 
         $sensor->delete();
         return response($response, 200);

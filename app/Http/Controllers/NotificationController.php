@@ -79,8 +79,21 @@ class NotificationController extends Controller
      * @param  \App\Models\Notification  $notification
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Notification $notification)
+    public function destroy($id)
     {
-        //
+        $notification = Notification::find($id);
+        $response = [
+            'id'=> $notification->id,
+            'alert'=>$notification->alert,
+            'message'=>$notification->message,
+        ];
+        $notification->delete();
+        return response($response, 201);
+    }
+
+    public function destroyAll()
+    {
+        Notification::truncate();
+        return response(201);
     }
 }
