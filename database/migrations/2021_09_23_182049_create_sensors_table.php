@@ -18,7 +18,8 @@ class CreateSensorsTable extends Migration
             $table->string('name');
             $table->string('building');
             $table->string('location');
-            $table->enum('status', ['Online', 'Pending' ,'Offline']);
+            $table->enum('status',['Online','Offline']);
+            $table->enum('alert', ['Normal','Warning', 'Critical', 'Error']);
             $table->integer('reading');
             $table->timestamps();
         });

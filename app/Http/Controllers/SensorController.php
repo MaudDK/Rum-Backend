@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Sensor;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SensorController extends Controller
 {
     // all sensors
     public function index()
     {
-       $sensors = Sensor::all()->toArray();
-       return array_reverse($sensors);
+       $sensors = Sensor::all();
+       return array_reverse(Sensor::all()->toArray());
 
     }
 
@@ -38,13 +39,12 @@ class SensorController extends Controller
             'name' => 'required|string',
             'building' => 'required|string',
             'location' => 'required|string',
-            'status' => 'required|in:Online, Pending, Offline',
+            'status' => 'required',
             'reading' => 'required|integer'
         ]);
 
         $sensorExists = false;
-        //replace with laravel built in finding method read docs eloquent models Retrieving Single Models / Aggregates
-        //temp code
+
         $sensors = Sensor::all();
         foreach($sensors as $sensor)
         {
@@ -87,11 +87,10 @@ class SensorController extends Controller
             'name' => 'required|string',
             'building' => 'required|string',
             'location' => 'required|string',
-            'status' => 'required|in:Online, Pending, Offline',
+            'status' => 'required|string',
             'reading' => 'required|integer'
         ]);
 
-        //What if not found ??? FIX !!
         $sensor = Sensor::where('name', $name)->firstOrFail();
 
         $sensor->name = $field['name'];
@@ -100,7 +99,6 @@ class SensorController extends Controller
         $sensor->status = $field['status'];
         $sensor->reading = $field['reading'];
 
-        $sensor->save();
 
         $response = [
             'id' => $sensor->id,
@@ -118,11 +116,10 @@ class SensorController extends Controller
     public function update($name, Request $request)
     {
         $field = $request->validate([
-            'status' => 'required|in:Online, Pending, Offline',
+            'status' => 'required|string',
             'reading' => 'required|integer'
         ]);
 
-        //What if not found ??? FIX !!
         $sensor = Sensor::where('name', $name)->firstOrFail();
 
         $sensor->status = $field['status'];
