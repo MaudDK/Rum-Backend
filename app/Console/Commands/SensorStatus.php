@@ -43,8 +43,8 @@ class SensorStatus extends Command
         $notifications = Notification::all();
         foreach($sensors as $sensor)
         {
-            //Logic for online sensors that have not updated in 10 mins
-            if (Carbon::now()->diffInMinutes($sensor->updated_at) > 10 && $sensor->status == "Online")
+            //Logic for online sensors that have not updated in 1 mins
+            if (Carbon::now()->diffInMinutes($sensor->updated_at) > 1 && $sensor->status == "Online")
             {
                 //Logic for Critical Alert
                 if($sensor->reading >= 500)
@@ -92,8 +92,8 @@ class SensorStatus extends Command
                     }
                 }
             }
-            //Logic for offline sensors that have not updated in 10 mins
-            else if (Carbon::now()->diffInMinutes($sensor->updated_at) > 10 && $sensor->status == "Offline")
+            //Logic for offline sensors that have not updated in 1 mins
+            else if (Carbon::now()->diffInMinutes($sensor->updated_at) > 1 && $sensor->status == "Offline")
             {
                 //Logic for Critical Alert
                 if($sensor->reading >= 500)
